@@ -1,5 +1,5 @@
 const Cell = () => {
-    const DEFAULT_VALUE = "/";
+    const DEFAULT_VALUE = " ";
     let value = DEFAULT_VALUE;
 
     const getValue = () => {
@@ -46,7 +46,7 @@ const GameController = (() => {
             console.log("Tie");
         }
 
-        GameBoard.logGameBoard();
+        TicTacToeDisplay.render();
     }
 
     return {playRound};
@@ -149,4 +149,35 @@ const GameBoard = (() => {
         return false;
     }
     return {getGameBoard, logGameBoard, putMark, checkWinner, checkTie};
+})();
+
+const TicTacToeDisplay = (() => {
+    const gridEl = document.getElementById("tic-tac-toe-grid");
+    
+    const render = () => {
+        gridEl.innerHTML = "";
+
+        const gameBoard = GameBoard.getGameBoard();
+        for(let i = 0; i < gameBoard.length; i++) {
+            for(let j = 0; j < gameBoard[i].length; j++) {
+                const cellTemplate = `
+                    <div class="tic-tac-toe-cell" data-row="${i}" data-col="${j}">
+                        ${gameBoard[i][j].getValue()}
+                    </div>
+                `;
+                gridEl.innerHTML += cellTemplate;
+            }
+        }
+    }
+
+    const clickCallBack = (event) => {
+        const clickedRow = event.target.dataset.row;
+        const clickedCol = event.target.dataset.col;
+        GameController.playRound(clickedRow, clickedCol);
+    }
+
+    gridEl.addEventListener("click", clickCallBack);
+
+    render();
+    return {render};
 })();

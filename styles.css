@@ -1,0 +1,58 @@
+:root {
+    --coral: #FF7F50;
+    --turquoise: #40e0d0;
+    --white: #FFF;
+    --light-gray: #D3D3D3;
+    --dark-gray: #A9A9A9;
+    --gray: #808080;
+    --black: #000;
+}
+
+body {
+    font-family: Robot, sans-serif;
+    margin:0 auto;
+    min-height: 100vh;
+}
+
+header {
+    text-align: center;
+    padding: 2rem ;
+}
+
+h1 {
+    font-size: 3rem;
+}
+
+h2 {
+    font-size: 2.5rem;
+}
+
+p {
+    font-size: 1rem;
+}
+
+small {
+    font-size: .8rem;
+}
+
+.tic-tac-toe-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 150px);
+    grid-template-rows: repeat(3, 150px);
+    justify-content: center;
+}
+
+.tic-tac-toe-cell {
+    background-color: var(--coral);
+    border:2px solid var(--black);
+    color: var(--turquoise);
+    font-weight: bold;
+    font-size:100px;
+    text-align: center;
+    cursor: pointer;
+    transition: opacity .3s ease;
+}
+
+.tic-tac-toe-cell:hover {
+    opacity: .9;
+}
