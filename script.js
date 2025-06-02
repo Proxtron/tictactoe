@@ -1,3 +1,56 @@
+const Cell = () => {
+    const DEFAULT_VALUE = "/";
+    let value = DEFAULT_VALUE;
+
+    const getValue = () => {
+        return value;
+    }
+
+    const setValue = (newValue) => {
+        value = newValue
+    }
+
+    return {getValue, setValue, DEFAULT_VALUE};
+}
+
+const Player = (playerMark) => {
+
+    const getPlayerMark = () => {
+        return playerMark;
+    }
+
+    const setPlayerMark = (newMark) => {
+        playerMark = newMark;
+    } 
+
+    return {getPlayerMark, setPlayerMark};
+};
+
+const GameController = (() => {
+    const playerOne = Player("X");
+    const playerTwo = Player("O");
+    let currentPlayer = playerOne;
+
+    const playRound = (row, column) => {
+        const currentPlayerMark = currentPlayer.getPlayerMark();
+        const putMarkSuccessful = GameBoard.putMark(currentPlayerMark, row, column);
+
+        if(putMarkSuccessful) {
+            //Alternate between player turns
+            currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+        }
+
+        if(GameBoard.checkWinner()) {
+            console.log("Winner");
+        }
+
+        GameBoard.logGameBoard();
+    }
+
+    return {playRound};
+})();
+
+
 const GameBoard = (() => {
     const gameBoard = [];
     const rows = 3;
@@ -10,6 +63,8 @@ const GameBoard = (() => {
             }
         }
     }
+
+    init();
 
     function getGameBoard() {
         return gameBoard;
@@ -26,19 +81,51 @@ const GameBoard = (() => {
         console.log(gameBoardStr);
     }
 
-    return {init, getGameBoard, logGameBoard};
+    const putMark = (mark, row, column) => {
+        const collisionOccured = checkCollision(row, column);
+        if(!collisionOccured) gameBoard[row][column].setValue(mark);
+
+        const markPlacementSuccessful = !collisionOccured;
+        return markPlacementSuccessful;
+    }
+
+    const checkCollision = (row, column) => {
+        return gameBoard[row][column].getValue() !== Cell().DEFAULT_VALUE;
+    }
+
+    const checkWinner = () => {
+        //Check rows
+        for(let i = 0; i < rows; i++) {
+            if((gameBoard[i][0].getValue() === gameBoard[i][1].getValue() &&
+                gameBoard[i][1].getValue() === gameBoard[i][2].getValue()) && 
+                gameBoard[i][0].getValue() !== Cell().DEFAULT_VALUE) {
+                return true;
+            }
+        }
+
+        //Check columns
+        for(let i = 0; i < columns; i++){
+            if((gameBoard[0][i].getValue() === gameBoard[1][i].getValue() &&
+                gameBoard[1][i].getValue() === gameBoard[2][i].getValue()) && 
+                gameBoard[0][i].getValue() !== Cell().DEFAULT_VALUE) {
+                return true;
+            }
+        }
+
+        //Check diagonals
+        if((gameBoard[0][0].getValue() === gameBoard[1][1].getValue() &&
+            gameBoard[1][1].getValue() === gameBoard[2][2].getValue()) && 
+            gameBoard[0][0].getValue() !== Cell().DEFAULT_VALUE) {
+            return true;
+        }
+
+        if((gameBoard[0][2].getValue() === gameBoard[1][1].getValue() &&
+            gameBoard[1][1].getValue() === gameBoard[2][0].getValue()) && 
+            gameBoard[0][0].getValue() !== Cell().DEFAULT_VALUE) {
+            return true;
+        }
+        
+        return false;
+    }
+    return {getGameBoard, logGameBoard, putMark, checkWinner};
 })();
-
-const Cell = () => {
-    let value = "0";
-
-    const getValue = () => {
-        return value;
-    }
-
-    const setValue = (newValue) => {
-        value = newValue
-    }
-
-    return {getValue, setValue};
-}
