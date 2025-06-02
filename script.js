@@ -42,6 +42,8 @@ const GameController = (() => {
 
         if(GameBoard.checkWinner()) {
             console.log("Winner");
+        } else if(GameBoard.checkTie()) {
+            console.log("Tie");
         }
 
         GameBoard.logGameBoard();
@@ -121,11 +123,30 @@ const GameBoard = (() => {
 
         if((gameBoard[0][2].getValue() === gameBoard[1][1].getValue() &&
             gameBoard[1][1].getValue() === gameBoard[2][0].getValue()) && 
-            gameBoard[0][0].getValue() !== Cell().DEFAULT_VALUE) {
+            gameBoard[0][2].getValue() !== Cell().DEFAULT_VALUE) {
             return true;
         }
         
         return false;
     }
-    return {getGameBoard, logGameBoard, putMark, checkWinner};
+
+    //Tie happens when board is filled and there are no winners
+    const checkTie = () => {
+        let boardFilled = true;
+        for(let i = 0; i < rows; i++) {
+            for(let j = 0; j < columns; j++) {
+                if(gameBoard[i][j].getValue() === Cell().DEFAULT_VALUE) {
+                    boardFilled = false;
+                }
+            }
+        }
+
+        const gameHasBeenWon = checkWinner();
+
+        if(boardFilled && !gameHasBeenWon) {
+            return true;
+        }
+        return false;
+    }
+    return {getGameBoard, logGameBoard, putMark, checkWinner, checkTie};
 })();
