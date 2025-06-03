@@ -18,7 +18,7 @@ const Cell = () => {
     return {getValue, setValue, isFilled};
 }
 
-const Player = (playerMark) => {
+const Player = (playerMark, playerName) => {
 
     const getPlayerMark = () => {
         return playerMark;
@@ -28,7 +28,11 @@ const Player = (playerMark) => {
         playerMark = newMark;
     } 
 
-    return {getPlayerMark, setPlayerMark};
+    const getPlayerName = () => {
+        return playerName;
+    }
+
+    return {getPlayerMark, setPlayerMark, getPlayerName};
 };
 
 const GameController = (() => {
@@ -37,6 +41,12 @@ const GameController = (() => {
     let currentPlayer = playerOne;
     let roundInProgress = true;
 
+    const initializePlayers = (playerOne, playerTwo) => {
+        playerOne = playerOne;
+        playerTwo = playerTwo;
+        currentPlayer = playerOne;
+    }
+
     const playRound = (row, column) => {
         if(roundInProgress) {
             const currentPlayerMark = currentPlayer.getPlayerMark();
@@ -44,10 +54,10 @@ const GameController = (() => {
             TicTacToeDisplay.render();
 
             if(GameBoard.checkWinner()) {
-                TicTacToeDisplay.displayWinMessage(currentPlayer);
+                GameMessageDisplay.displayWinMessage(currentPlayer);
                 endRound();
             } else if(GameBoard.checkTie()) {
-                TicTacToeDisplay.displayTieMessage();
+                GameMessageDisplay.displayTieMessage();
                 endRound();
             }
 
@@ -168,7 +178,7 @@ const GameBoard = (() => {
 
 const TicTacToeDisplay = (() => {
     const gridEl = document.getElementById("tic-tac-toe-grid");
-    const endMessageDiv = document.getElementById("end-message-div");
+    
 
     const render = () => {
         gridEl.innerHTML = "";
@@ -198,6 +208,15 @@ const TicTacToeDisplay = (() => {
 
     gridEl.addEventListener("click", clickCallBack);
 
+  
+
+    render();
+    return {render, fadeGrid};
+})();
+
+const GameMessageDisplay = (() => {
+    const endMessageDiv = document.getElementById("end-message-div");
+
     const displayWinMessage = (winningPlayer) => {
         endMessageDiv.innerHTML = `<h2>Winner: ${winningPlayer.getPlayerMark()}</h2>`
     }
@@ -206,7 +225,5 @@ const TicTacToeDisplay = (() => {
         endMessageDiv.innerHTML = `<h2>Tie Game</h2>`;
     }
 
-
-    render();
-    return {render, displayWinMessage, displayTieMessage, fadeGrid};
+    return {displayTieMessage, displayWinMessage};
 })();

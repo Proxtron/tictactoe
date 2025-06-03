@@ -6,7 +6,7 @@
     --dark-gray: #A9A9A9;
     --gray: #808080;
     --black: #000;
-    
+    --green: rgb(31, 187, 10);
 }
 
 body {
@@ -75,6 +75,31 @@ small {
 }
 
 .side-bar-wrapper {
-    width:100px;
     position: absolute;
+    left: 100px;
+}
+
+.player-name-form > p {
+    margin-bottom: 2rem;
+}
+
+label {
+    width: 50px;
+    display:inline-block;
+    font-weight: bold;
+}
+input[type="text"] {
+    display:inline-block;
+}
+
+.start-game-btn {
+    background-color: var(--green);
+    padding: 1rem 2rem;
+    appearance: none;
+    border: none;
+    border-radius: .5rem;
+    color: var(--white);
+    font-weight: bold;
+    cursor: pointer;
+    margin-left:75px;
 }

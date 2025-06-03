@@ -16,7 +16,17 @@
     </header>
     <main>
         <div class="side-bar-wrapper">
-            
+            <form id="player-name-form" class="player-name-form">
+                <p>
+                    <label for="player-one-name-input">X</label>
+                    <input id="player-one-name-input" name="player_one_name_input" placeholder="x's name" type="text">    
+                </p>
+                <p>
+                    <label for="player-two-name-input">O</label>
+                    <input id="player-two-name-input" name="player_two_name_input" placeholder="o's name" type="text">    
+                </p>
+                <button class="start-game-btn" type="submit">Start Game</button>
+            </form>
         </div>
         <div class="center-content">
            <div id="tic-tac-toe-grid" class="tic-tac-toe-grid">
