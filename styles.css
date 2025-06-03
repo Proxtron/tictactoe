@@ -6,6 +6,7 @@
     --dark-gray: #A9A9A9;
     --gray: #808080;
     --black: #000;
+    
 }
 
 body {
@@ -40,6 +41,18 @@ small {
     grid-template-columns: repeat(3, 150px);
     grid-template-rows: repeat(3, 150px);
     justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.game-over-grid {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.center-content {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .tic-tac-toe-cell {
@@ -55,4 +68,13 @@ small {
 
 .tic-tac-toe-cell:hover {
     opacity: .9;
+}
+
+.cell-filled {
+    cursor: not-allowed;
+}
+
+.side-bar-wrapper {
+    width:100px;
+    position: absolute;
 }

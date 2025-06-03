@@ -1,16 +1,21 @@
 const Cell = () => {
     const DEFAULT_VALUE = " ";
     let value = DEFAULT_VALUE;
-
+    let filled = false;
     const getValue = () => {
         return value;
     }
 
-    const setValue = (newValue) => {
-        value = newValue
+    const isFilled = () => {
+        return filled;
     }
 
-    return {getValue, setValue, DEFAULT_VALUE};
+    const setValue = (newValue) => {
+        value = newValue
+        filled = true;
+    }
+
+    return {getValue, setValue, isFilled};
 }
 
 const Player = (playerMark) => {
@@ -30,23 +35,33 @@ const GameController = (() => {
     const playerOne = Player("X");
     const playerTwo = Player("O");
     let currentPlayer = playerOne;
+    let roundInProgress = true;
 
     const playRound = (row, column) => {
-        const currentPlayerMark = currentPlayer.getPlayerMark();
-        const putMarkSuccessful = GameBoard.putMark(currentPlayerMark, row, column);
+        if(roundInProgress) {
+            const currentPlayerMark = currentPlayer.getPlayerMark();
+            const putMarkSuccessful = GameBoard.putMark(currentPlayerMark, row, column);
+            TicTacToeDisplay.render();
 
-        if(putMarkSuccessful) {
-            //Alternate between player turns
-            currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+            if(GameBoard.checkWinner()) {
+                TicTacToeDisplay.displayWinMessage(currentPlayer);
+                endRound();
+            } else if(GameBoard.checkTie()) {
+                TicTacToeDisplay.displayTieMessage();
+                endRound();
+            }
+
+            if(putMarkSuccessful) {
+                //Alternate between player turns
+                currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+            }
         }
+        
+    }
 
-        if(GameBoard.checkWinner()) {
-            console.log("Winner");
-        } else if(GameBoard.checkTie()) {
-            console.log("Tie");
-        }
-
-        TicTacToeDisplay.render();
+    const endRound = () => {
+        roundInProgress = false;
+        TicTacToeDisplay.fadeGrid();
     }
 
     return {playRound};
@@ -92,7 +107,7 @@ const GameBoard = (() => {
     }
 
     const checkCollision = (row, column) => {
-        return gameBoard[row][column].getValue() !== Cell().DEFAULT_VALUE;
+        return gameBoard[row][column].isFilled();
     }
 
     const checkWinner = () => {
@@ -100,7 +115,7 @@ const GameBoard = (() => {
         for(let i = 0; i < rows; i++) {
             if((gameBoard[i][0].getValue() === gameBoard[i][1].getValue() &&
                 gameBoard[i][1].getValue() === gameBoard[i][2].getValue()) && 
-                gameBoard[i][0].getValue() !== Cell().DEFAULT_VALUE) {
+                gameBoard[i][0].isFilled()) {
                 return true;
             }
         }
@@ -109,7 +124,7 @@ const GameBoard = (() => {
         for(let i = 0; i < columns; i++){
             if((gameBoard[0][i].getValue() === gameBoard[1][i].getValue() &&
                 gameBoard[1][i].getValue() === gameBoard[2][i].getValue()) && 
-                gameBoard[0][i].getValue() !== Cell().DEFAULT_VALUE) {
+                gameBoard[0][i].isFilled()) {
                 return true;
             }
         }
@@ -117,13 +132,13 @@ const GameBoard = (() => {
         //Check diagonals
         if((gameBoard[0][0].getValue() === gameBoard[1][1].getValue() &&
             gameBoard[1][1].getValue() === gameBoard[2][2].getValue()) && 
-            gameBoard[0][0].getValue() !== Cell().DEFAULT_VALUE) {
+            gameBoard[0][0].isFilled()) {
             return true;
         }
 
         if((gameBoard[0][2].getValue() === gameBoard[1][1].getValue() &&
             gameBoard[1][1].getValue() === gameBoard[2][0].getValue()) && 
-            gameBoard[0][2].getValue() !== Cell().DEFAULT_VALUE) {
+            gameBoard[0][2].isFilled()) {
             return true;
         }
         
@@ -135,7 +150,7 @@ const GameBoard = (() => {
         let boardFilled = true;
         for(let i = 0; i < rows; i++) {
             for(let j = 0; j < columns; j++) {
-                if(gameBoard[i][j].getValue() === Cell().DEFAULT_VALUE) {
+                if(!gameBoard[i][j].isFilled()) {
                     boardFilled = false;
                 }
             }
@@ -153,7 +168,8 @@ const GameBoard = (() => {
 
 const TicTacToeDisplay = (() => {
     const gridEl = document.getElementById("tic-tac-toe-grid");
-    
+    const endMessageDiv = document.getElementById("end-message-div");
+
     const render = () => {
         gridEl.innerHTML = "";
 
@@ -161,13 +177,17 @@ const TicTacToeDisplay = (() => {
         for(let i = 0; i < gameBoard.length; i++) {
             for(let j = 0; j < gameBoard[i].length; j++) {
                 const cellTemplate = `
-                    <div class="tic-tac-toe-cell" data-row="${i}" data-col="${j}">
+                    <div class="tic-tac-toe-cell ${gameBoard[i][j].isFilled() ? "cell-filled" : ""}" data-row="${i}" data-col="${j}">
                         ${gameBoard[i][j].getValue()}
                     </div>
                 `;
                 gridEl.innerHTML += cellTemplate;
             }
         }
+    }
+
+    const fadeGrid = () => {
+        gridEl.classList.add("game-over-grid");
     }
 
     const clickCallBack = (event) => {
@@ -178,6 +198,15 @@ const TicTacToeDisplay = (() => {
 
     gridEl.addEventListener("click", clickCallBack);
 
+    const displayWinMessage = (winningPlayer) => {
+        endMessageDiv.innerHTML = `<h2>Winner: ${winningPlayer.getPlayerMark()}</h2>`
+    }
+
+    const displayTieMessage = () => {
+        endMessageDiv.innerHTML = `<h2>Tie Game</h2>`;
+    }
+
+
     render();
-    return {render};
+    return {render, displayWinMessage, displayTieMessage, fadeGrid};
 })();
