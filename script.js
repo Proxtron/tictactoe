@@ -41,7 +41,7 @@ const GameController = (() => {
     let currentPlayer = playerOne;
     let roundInProgress = true;
 
-    const initializePlayers = (playerOne, playerTwo) => {
+    const initializeGame = (playerOne, playerTwo) => {
         playerOne = playerOne;
         playerTwo = playerTwo;
         currentPlayer = playerOne;
@@ -178,9 +178,10 @@ const GameBoard = (() => {
 
 const TicTacToeDisplay = (() => {
     const gridEl = document.getElementById("tic-tac-toe-grid");
-    
+    const gridWrapper = document.getElementById("grid-wrapper");
 
     const render = () => {
+        gridWrapper.style.display = "block";
         gridEl.innerHTML = "";
 
         const gameBoard = GameBoard.getGameBoard();
@@ -208,9 +209,6 @@ const TicTacToeDisplay = (() => {
 
     gridEl.addEventListener("click", clickCallBack);
 
-  
-
-    render();
     return {render, fadeGrid};
 })();
 
@@ -226,4 +224,14 @@ const GameMessageDisplay = (() => {
     }
 
     return {displayTieMessage, displayWinMessage};
+})();
+
+const PlayerNameForm = (() => {
+    const form = document.getElementById("player-name-form");
+
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        form.innerHTML = "";
+        TicTacToeDisplay.render();
+    });
 })();

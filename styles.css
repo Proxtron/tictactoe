@@ -2,7 +2,7 @@
     --coral: #FF7F50;
     --turquoise: #40e0d0;
     --white: #FFF;
-    --light-gray: #D3D3D3;
+    --light-gray: #e8e8e8;
     --dark-gray: #A9A9A9;
     --gray: #808080;
     --black: #000;
@@ -11,7 +11,8 @@
 
 body {
     font-family: Robot, sans-serif;
-    margin:0 auto;
+    display:flex;
+    justify-content: center;
     min-height: 100vh;
 }
 
@@ -36,6 +37,11 @@ small {
     font-size: .8rem;
 }
 
+.center-body {
+    background-color: var(--light-gray);
+    box-shadow: 0px 0px 10px var(--light-gray);
+    width:800px;
+}
 .tic-tac-toe-grid {
     display: grid;
     grid-template-columns: repeat(3, 150px);
@@ -44,15 +50,17 @@ small {
     margin-bottom: 2rem;
 }
 
+main {
+    display:flex;
+    justify-content: center;
+}
 .game-over-grid {
     opacity: .5;
     cursor: not-allowed;
 }
 
-.center-content {
-    display:flex;
-    flex-direction: column;
-    align-items: center;
+.grid-wrapper {
+    display:none;
 }
 
 .tic-tac-toe-cell {
@@ -74,24 +82,35 @@ small {
     cursor: not-allowed;
 }
 
-.side-bar-wrapper {
-    position: absolute;
-    left: 100px;
-}
-
-.player-name-form > p {
-    margin-bottom: 2rem;
+.playername-input-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 5rem;
+    justify-items: center;
+    margin-bottom: 5rem;
 }
 
 label {
-    width: 50px;
-    display:inline-block;
+    font-size:100px;
     font-weight: bold;
 }
+
 input[type="text"] {
-    display:inline-block;
+    appearance: none;
+    border: none;
+    background-color: var(--black);
+    color:var(--white);
+    padding:.5rem 1.5rem;
+    font-size:20px;
+    border-radius: .5rem;    
 }
 
+.opacity-transition {
+    transition: opacity .3s ease;
+}
+.opacity-transition:hover, .opacity-transition:focus {
+    opacity: .8;
+}
 .start-game-btn {
     background-color: var(--green);
     padding: 1rem 2rem;
@@ -101,5 +120,7 @@ input[type="text"] {
     color: var(--white);
     font-weight: bold;
     cursor: pointer;
-    margin-left:75px;
+    margin:0 auto;
+    display: block;
+    font-size: 2rem;
 }

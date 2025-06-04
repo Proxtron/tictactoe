@@ -11,31 +11,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>Tic Tac Toe</h1>
-    </header>
-    <main>
-        <div class="side-bar-wrapper">
+    <div class="center-body">
+        <header>
+            <h1>Tic Tac Toe</h1>
+        </header>
+        <main>
             <form id="player-name-form" class="player-name-form">
-                <p>
+
+                <div class="playername-input-group">
                     <label for="player-one-name-input">X</label>
-                    <input id="player-one-name-input" name="player_one_name_input" placeholder="x's name" type="text">    
-                </p>
-                <p>
                     <label for="player-two-name-input">O</label>
-                    <input id="player-two-name-input" name="player_two_name_input" placeholder="o's name" type="text">    
-                </p>
-                <button class="start-game-btn" type="submit">Start Game</button>
+                    <input id="player-one-name-input" name="player_one_name_input" class="opacity-transition" placeholder="x's name" type="text">
+                    <input id="player-two-name-input" name="player_two_name_input" class="opacity-transition" placeholder="o's name" type="text">
+                </div>
+
+                <button class="start-game-btn opacity-transition" type="submit">Start Game</button>
             </form>
-        </div>
-        <div class="center-content">
-           <div id="tic-tac-toe-grid" class="tic-tac-toe-grid">
+            <div id="grid-wrapper" class="grid-wrapper">
+               <div id="tic-tac-toe-grid" class="tic-tac-toe-grid">
+                </div>
+                <div id="end-message-div" class="end-message-div">
+                </div>
             </div>
-            <div id="end-message-div" class="end-message-div">
-            </div> 
-        </div>
-        
-    </main>
+        </main>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
