@@ -7,6 +7,7 @@
     --gray: #808080;
     --black: #000;
     --green: rgb(31, 187, 10);
+    --red: #f52323;
 }
 
 body {
@@ -103,6 +104,10 @@ input[type="text"] {
     padding:.5rem 1.5rem;
     font-size:20px;
     border-radius: .5rem;    
+}
+
+input[type="text"]:user-invalid {
+    border: 2px solid var(--red);
 }
 
 .opacity-transition {
