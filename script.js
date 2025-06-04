@@ -72,10 +72,24 @@ const GameController = (() => {
 
     const endRound = () => {
         roundInProgress = false;
-        TicTacToeDisplay.fadeGrid();
+        TicTacToeDisplay.toggleFadeGrid();
     }
 
-    return {playRound, initializePlayers};
+    const resetRound = () => {
+        GameBoard.init();
+
+        if(!roundInProgress) {
+            TicTacToeDisplay.toggleFadeGrid();
+        }
+
+        roundInProgress = true;
+        currentPlayer = playerOne;
+
+        GameMessageDisplay.hideMessage();
+        TicTacToeDisplay.render();
+    }
+
+    return {playRound, initializePlayers, resetRound};
 })();
 
 
@@ -174,7 +188,7 @@ const GameBoard = (() => {
         }
         return false;
     }
-    return {getGameBoard, logGameBoard, putMark, checkWinner, checkTie};
+    return {getGameBoard, logGameBoard, putMark, checkWinner, checkTie, init};
 })();
 
 const TicTacToeDisplay = (() => {
@@ -198,8 +212,12 @@ const TicTacToeDisplay = (() => {
         }
     }
 
-    const fadeGrid = () => {
-        gridEl.classList.add("game-over-grid");
+    const toggleFadeGrid = () => {
+        if(gridEl.classList.contains("game-over-grid")) {
+            gridEl.classList.remove("game-over-grid");
+        } else {
+            gridEl.classList.add("game-over-grid");
+        }
     }
 
     const clickCallBack = (event) => {
@@ -210,7 +228,7 @@ const TicTacToeDisplay = (() => {
 
     gridEl.addEventListener("click", clickCallBack);
 
-    return {render, fadeGrid};
+    return {render, toggleFadeGrid};
 })();
 
 const GameMessageDisplay = (() => {
@@ -224,7 +242,11 @@ const GameMessageDisplay = (() => {
         endMessageDiv.innerHTML = `<h2>Tie Game</h2>`;
     }
 
-    return {displayTieMessage, displayWinMessage};
+    const hideMessage = () => {
+        endMessageDiv.innerHTML = "";
+    }
+
+    return {displayTieMessage, displayWinMessage, hideMessage};
 })();
 
 const PlayerNameForm = (() => {
@@ -242,4 +264,10 @@ const PlayerNameForm = (() => {
         form.innerHTML = "";
         TicTacToeDisplay.render();
     });
+})();
+
+const ResetBoardButton = (() => {
+    const resetButtonEl = document.getElementById("reset-board-btn");
+
+    resetButtonEl.addEventListener("click", GameController.resetRound);
 })();

@@ -133,3 +133,17 @@ input[type="text"]:user-invalid {
 .end-message-div {
     text-align: center;
 }
+
+.reset-board-btn {
+    background-color: var(--red);
+    appearance: none;
+    border: none;
+    border-radius: .5rem;
+    color:white;
+    font-size:2rem;
+    font-weight: bold;
+    padding: .5rem 1rem;
+    cursor:pointer;
+    margin: 0 auto;
+    display:block;
+}
