@@ -124,3 +124,7 @@ input[type="text"] {
     display: block;
     font-size: 2rem;
 }
+
+.end-message-div {
+    text-align: center;
+}

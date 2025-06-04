@@ -36,15 +36,16 @@ const Player = (playerMark, playerName) => {
 };
 
 const GameController = (() => {
-    const playerOne = Player("X");
-    const playerTwo = Player("O");
-    let currentPlayer = playerOne;
-    let roundInProgress = true;
+    let playerOne;
+    let playerTwo;
+    let currentPlayer;
+    let roundInProgress = false;
 
-    const initializeGame = (playerOne, playerTwo) => {
-        playerOne = playerOne;
-        playerTwo = playerTwo;
+    const initializePlayers = (newPlayerOne, newPlayerTwo) => {
+        playerOne = newPlayerOne;
+        playerTwo = newPlayerTwo;
         currentPlayer = playerOne;
+        roundInProgress = true;
     }
 
     const playRound = (row, column) => {
@@ -74,7 +75,7 @@ const GameController = (() => {
         TicTacToeDisplay.fadeGrid();
     }
 
-    return {playRound};
+    return {playRound, initializePlayers};
 })();
 
 
@@ -216,7 +217,7 @@ const GameMessageDisplay = (() => {
     const endMessageDiv = document.getElementById("end-message-div");
 
     const displayWinMessage = (winningPlayer) => {
-        endMessageDiv.innerHTML = `<h2>Winner: ${winningPlayer.getPlayerMark()}</h2>`
+        endMessageDiv.innerHTML = `<h2>Winner: ${winningPlayer.getPlayerName()} (${winningPlayer.getPlayerMark()})</h2>`
     }
 
     const displayTieMessage = () => {
@@ -231,6 +232,13 @@ const PlayerNameForm = (() => {
 
     form.addEventListener("submit", (event) => {
         event.preventDefault();
+
+        const playerNameFormData = new FormData(form);
+        GameController.initializePlayers(
+            Player("X", playerNameFormData.get("player_one_name_input")),
+            Player("O", playerNameFormData.get("player_two_name_input"))
+        );
+
         form.innerHTML = "";
         TicTacToeDisplay.render();
     });
